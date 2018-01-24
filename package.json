@@ -1,0 +1,13 @@
+{
+  "name": "my_particle_alexa_skill",
+  "description": "Alexa Skill Lambda Function for accessing Particle devices",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/bsatrom/MyParticle.git"
+  },
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "alexa-sdk": "^1.0.25"
+  }
+}
