@@ -70,9 +70,7 @@ const handlers = {
         })
         .then((device) => {
           if (device) {
-            this.response.speak(`Here are the functions for the device named 
-              ${utils.normalizeDeviceName(deviceName)}: 
-              ${utils.sayArray(device.body.functions)}`);
+            this.response.speak(`Here are the functions for the device named ${utils.normalizeDeviceName(deviceName)}: ${utils.sayArray(device.body.functions)}`);
           }
         })
         .catch((error) => {
