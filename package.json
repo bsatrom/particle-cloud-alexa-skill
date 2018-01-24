@@ -8,6 +8,7 @@
   "version": "0.0.1",
   "private": false,
   "dependencies": {
-    "alexa-sdk": "^1.0.25"
+    "alexa-sdk": "^1.0.25",
+    "particle-api-js": "^7.0.1"
   }
 }
