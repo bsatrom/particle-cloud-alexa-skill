@@ -1,8 +1,22 @@
 // Utility functions for My Particle Alexa Skill
 
 const normalizeDeviceName = (name) => {
-  return name.toLowerCase().replace(/[-_]+/g, ' ')
-}
+  return name.toLowerCase().replace(/[-_]+/g, ' ');
+};
+
+const normalizeFunctionName = (name) => {
+  const functionWords = name.split(' ');
+
+  let normalizedName = functionWords.map((word, index) => {
+    if (index === 0) {
+      return word;
+    } else {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+  }).join('');
+
+  return normalizedName;
+};
 
 const sayArray = (items, penultimateWord = 'and') => {
   let result = '';
@@ -18,9 +32,10 @@ const sayArray = (items, penultimateWord = 'and') => {
       }
   });
   return result;
-}
+};
 
 exports.utils = {
   normalizeDeviceName,
+  normalizeFunctionName,
   sayArray
-}
+};

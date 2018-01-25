@@ -7,7 +7,8 @@
 'use strict';
 
 const Alexa = require('alexa-sdk');
-const utils = require('./skillUtils').utils
+const utils = require('./skillUtils').utils;
+// const particleUtils = require('./particleUtils').utils;
 
 const Particle = require('particle-api-js');
 const particle = new Particle();
@@ -82,7 +83,56 @@ const handlers = {
         })
     },
     'CallFunctionIntent': function() {
+      const deviceName = utils.normalizeDeviceName(this.event.request.intent.slots.device.value);
+      const functionName = utils.normalizeFunctionName(this.event.request.intent.slots.functionName.value);
+      const functionArg = 'Yoooo'; // ADD
 
+      particle.listDevices({ auth: token })
+        .then((devices) => {
+          const device = devices.body.filter(device => 
+            utils.normalizeDeviceName(device.name) === deviceName)[0];
+          
+          if (device) {
+            return particle.getDevice({ deviceId: device.id, auth: token });
+          } else {
+            this.response.speak(`Sorry, I couldn't find a device by that name`);
+
+            return null;
+          }
+        })
+        .then((device) => {
+          if (device) {
+            const cloudFunction = device.body.functions.filter(fn => fn === functionName)[0];
+            const fnArguments = { 
+              deviceId: device.body.id,
+              name: cloudFunction,
+              argument: functionArg,
+              auth: token 
+            };
+
+            if (cloudFunction) { 
+              return particle.callFunction(fnArguments);
+            } else {
+              this.response.speak(`Sorry, I couldn't find a function by that name`);
+
+              return null;
+            }
+          }
+        })
+        .then((result) => {
+          if (result) {
+            this.response.speak(`Ok, I called the function named ${functionName} on ${deviceName}`);
+          } else {
+            this.response.speak(`Sorry, I was unable to call the function named ${functionName} on ${deviceName}`);
+          }
+        })
+        .catch((error) => {
+          console.log('CallFunctionIntent Error: ', error)
+          this.response.speak(`Sorry, I couldn't call the function what you wanted. Please try again`);
+        })
+        .finally(() => {
+          this.emit(':responseReady');
+        })
     },
     'AMAZON.HelpIntent': function () {
       const speechOutput = this.t('HELP_MESSAGE');
