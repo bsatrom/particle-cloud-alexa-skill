@@ -8,7 +8,6 @@
 
 const Alexa = require('alexa-sdk');
 const utils = require('./skillUtils').utils;
-// const particleUtils = require('./particleUtils').utils;
 
 const Particle = require('particle-api-js');
 const particle = new Particle();
@@ -52,9 +51,18 @@ const handlers = {
           this.emit(':tell', `This request has failed. Please try again. ${err}`);
         }
       );
-  },
+    },
+    'SetActiveDeviceIntent': function() {
+      const deviceName = this.event.request.intent.slots.device.value;
+      this.attributes['currentDevice'] = deviceName;
+
+      this.emit(':tell', `Ok, I've set your current device to ${deviceName}`);
+    },
+    'GetActiveDeviceIntent': function() {
+      this.emit(':tell', `Your current active device is ${this.attributes['currentDevice']}`);
+    },
     'ListFunctionsIntent': function() {
-      const deviceName = utils.normalizeDeviceName(this.event.request.intent.slots.device.value);
+      const deviceName = utils.normalizeDeviceName(this.event.request.intent.slots.device.value || this.attributes['currentDevice']);
 
       particle.listDevices({ auth: token })
         .then((devices) => {
@@ -71,7 +79,7 @@ const handlers = {
         })
         .then((device) => {
           if (device) {
-            this.response.speak(`Here are the functions for the device named ${utils.normalizeDeviceName(deviceName)}: ${utils.sayArray(device.body.functions)}`);
+            this.response.speak(`Here are the functions for the device named ${deviceName}: ${utils.sayArray(device.body.functions)}`);
           }
         })
         .catch((error) => {
@@ -83,9 +91,10 @@ const handlers = {
         })
     },
     'CallFunctionIntent': function() {
-      const deviceName = utils.normalizeDeviceName(this.event.request.intent.slots.device.value);
-      const functionName = utils.normalizeFunctionName(this.event.request.intent.slots.functionName.value);
-      const functionArg = 'Yoooo'; // ADD
+      const slots = this.event.request.intent.slots
+      const deviceName = utils.normalizeDeviceName(slots.device.value || this.attributes['currentDevice']);
+      const functionName = utils.normalizeFunctionName(slots.functionName.value);
+      const functionArg = slots.argument.value;
 
       particle.listDevices({ auth: token })
         .then((devices) => {

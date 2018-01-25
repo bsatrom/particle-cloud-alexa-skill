@@ -1,0 +1,21 @@
+service: MyParticleAlexaSkill-SRV
+
+frameworkVersion: ">=1.4.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+environment:
+  PARTICLE_ACCESS_TOKEN: 7d2c1421777cb9487640bb72a2be6a42812cc20a
+
+package:
+  include:
+    - particleUtils.js
+    - skillUtils.js
+    - node_modules/**
+
+functions:
+  handler:
+    handler: index.handler
+    events:
+      - alexaSkill
