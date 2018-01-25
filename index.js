@@ -1,5 +1,3 @@
-/* eslint-disable  func-names */
-/* eslint quote-props: ["error", "consistent"] */
 /**
  * Alexa Skill Lambda Function for accessing Particle devices.
  **/
@@ -16,18 +14,26 @@ const token = process.env.PARTICLE_ACCESS_TOKEN;
 const APP_ID = 'amzn1.ask.skill.925e2d0a-2bd9-434a-83ae-c6bb8fd16085';
 
 const handlers = {
+  'LaunchRequest': function () {
+    this.response
+        .speak('Welcome to the Particle cloud. How can I help you!')
+        .listen('You can ask me about online devices, list and call cloud functions.');
+    this.emit(':responseReady');
+  },
   'NumberOfDevicesIntent': function() {
     particle.listDevices({ auth: token })
       .then(
         (devices) => {
           const onlineDevicesCount = devices.body.filter(device => device.connected).length;
 
-          this.emit(':tell', `There ${onlineDevicesCount > 1 
+          this.response.speak(`There ${onlineDevicesCount > 1 
             ? `are ${onlineDevicesCount} devices` 
             : `is ${onlineDevicesCount} device`} online at the moment.`);
+          this.emit(':responseReady');
         },
         (err) => {
-          this.emit(':tell', `This request has failed. Please try again. ${err}`);
+          this.response.speak(`This request has failed. Please try again. ${err}`);
+          this.emit(':responseReady');
         }
       );
   },
@@ -41,14 +47,17 @@ const handlers = {
           if (onlineDevicesCount === 1) {
             const device = onlineDevices[0]
             
-            this.emit(':tell', `You have one device online, named ${utils.normalizeDeviceName(device.name)}.`);
+            this.response.speak(`You have one device online, named ${utils.normalizeDeviceName(device.name)}.`);
+            this.emit(':responseReady');
           } else {
-            this.emit(':tell', `You have ${onlineDevicesCount} devices online. Their names are ${utils.sayArray(onlineDevices.map(device => utils.normalizeDeviceName(device.name)))}.`)
+            this.response.speak(`You have ${onlineDevicesCount} devices online. Their names are ${utils.sayArray(onlineDevices.map(device => utils.normalizeDeviceName(device.name)))}.`);
+            this.emit(':responseReady');
           }
         },
         (err) => {
           console.log('ListDevicesIntent Error: ', error)
-          this.emit(':tell', `This request has failed. Please try again. ${err}`);
+          this.response.speak(`This request has failed. Please try again. ${err}`);
+          this.emit(':responseReady');
         }
       );
     },
@@ -56,10 +65,12 @@ const handlers = {
       const deviceName = this.event.request.intent.slots.device.value;
       this.attributes['currentDevice'] = deviceName;
 
-      this.emit(':tell', `Ok, I've set your current device to ${deviceName}`);
+      this.response.speak(`Ok, I've set your current device to ${deviceName}`);
+      this.emit(':responseReady');
     },
     'GetActiveDeviceIntent': function() {
-      this.emit(':tell', `Your current active device is ${this.attributes['currentDevice']}`);
+      this.response.speak(`Your current active device is ${this.attributes['currentDevice']}`);
+      this.emit(':responseReady');
     },
     'ListFunctionsIntent': function() {
       const deviceName = utils.normalizeDeviceName(this.event.request.intent.slots.device.value || this.attributes['currentDevice']);
@@ -149,10 +160,12 @@ const handlers = {
       this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {
-      this.emit(':tell', this.t('STOP_MESSAGE'));
+      this.response.speak(this.t('STOP_MESSAGE'));
+      this.emit(':responseReady');
     },
     'AMAZON.StopIntent': function () {
-      this.emit(':tell', this.t('STOP_MESSAGE'));
+      this.response.speak(this.t('STOP_MESSAGE'));
+      this.emit(':responseReady');
     },
 };
 
