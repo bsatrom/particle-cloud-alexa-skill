@@ -172,6 +172,7 @@ const handlers = {
 exports.handler = function (event, context, callback) {
   const alexa = Alexa.handler(event, context);
   alexa.APP_ID = APP_ID;
+  alexa.dynamoDBTableName = 'particleDeviceState';
   alexa.registerHandlers(handlers);
   alexa.execute();
 };
