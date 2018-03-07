@@ -17,5 +17,6 @@ package:
 functions:
   handler:
     handler: index.handler
+    role: arn:aws:iam::831933616546:role/lambda-dynamodb-execution-role
     events:
       - alexaSkill

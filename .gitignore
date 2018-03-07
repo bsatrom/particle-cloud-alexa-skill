@@ -7,6 +7,7 @@ jspm_packages
 # Serverless directories
 .serverless
 seerverless.yml
+credentials
 
 # Logs
 logs
