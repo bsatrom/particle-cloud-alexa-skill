@@ -16,8 +16,8 @@ const APP_ID = 'amzn1.ask.skill.925e2d0a-2bd9-434a-83ae-c6bb8fd16085';
 const handlers = {
   'LaunchRequest': function () {
     this.response
-        .speak('Welcome to the Particle cloud. How can I help you!')
-        .listen('You can ask me about online devices, list and call cloud functions.');
+      .speak('Welcome to the Particle cloud. You can ask me about online devices, list functions and variables, set variables and call cloud functions.')
+      .listen('Give me a command or ask "what can Particle do" to get started.');
     this.emit(':responseReady');
   },
   'NumberOfDevicesIntent': function() {
