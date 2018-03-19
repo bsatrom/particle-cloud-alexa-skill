@@ -10,5 +10,9 @@
   "dependencies": {
     "alexa-sdk": "^1.0.25",
     "particle-api-js": "^7.0.1"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0"
   }
 }

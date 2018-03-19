@@ -1,4 +1,4 @@
-// Utility functions for My Particle Alexa Skill
+// Utility functions for Particle Alexa Skill
 
 const normalizeDeviceName = (name) => {
   return name ? name.toLowerCase().replace(/[-_]+/g, ' ') : '';
