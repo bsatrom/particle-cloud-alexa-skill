@@ -1,7 +1,6 @@
 /**
  * Alexa Skill Lambda Function for accessing Particle devices.
  **/
-
 'use strict';
 
 const Alexa = require('alexa-sdk');
@@ -13,8 +12,19 @@ const emitResponse = (alexaSdk, response) => {
   alexaSdk.emit(':responseReady');
 };
 
+const emitAccountLinkResponse = alexaSdk => {
+  alexaSdk.emit(
+    ':tellWithLinkAccountCard',
+    'To start using this skill, please use the Alexa app to authenticate with Particle.'
+  );
+};
+
 const handlers = {
   LaunchRequest: function() {
+    if (this.event.session.user.accessToken === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
     this.response
       .speak(
         'Welcome to the Particle cloud. You can ask me about online devices, list functions and variables, set variables and call cloud functions.'
@@ -26,8 +36,14 @@ const handlers = {
   },
   NumberOfDevicesIntent: function() {
     let response;
+    const token = this.event.session.user.accessToken;
 
-    particleApiUtils.getOnlineDevices
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
+    particleApiUtils
+      .getOnlineDevices(token)
       .then(devices => {
         const onlineDevicesCount = devices.length;
 
@@ -46,8 +62,14 @@ const handlers = {
   },
   ListDevicesIntent: function() {
     let response;
+    const token = this.event.session.user.accessToken;
 
-    particleApiUtils.getOnlineDevices
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
+    particleApiUtils
+      .getOnlineDevices(token)
       .then(devices => {
         const onlineDevicesCount = devices.length;
 
@@ -87,13 +109,19 @@ const handlers = {
     }
   },
   ListFunctionsIntent: function() {
+    const token = this.event.session.user.accessToken;
+
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
     const deviceName = utils.normalizeDeviceName(
       this.event.request.intent.slots.device.value ||
         this.attributes['currentDevice']
     );
 
     particleApiUtils
-      .getDeviceFunctions(deviceName)
+      .getDeviceFunctions(token, deviceName)
       .then(functions => {
         emitResponse(
           this,
@@ -114,6 +142,12 @@ const handlers = {
       });
   },
   CallFunctionIntent: function() {
+    const token = this.event.session.user.accessToken;
+
+    if (token === undefined) {
+      return mitAccountLinkResponse(this);
+    }
+
     const slots = this.event.request.intent.slots;
     const deviceName = utils.normalizeDeviceName(
       slots.device.value || this.attributes['currentDevice']
@@ -122,7 +156,7 @@ const handlers = {
     const functionArg = slots.argument ? slots.argument.value : '';
 
     particleApiUtils
-      .callDeviceFunction(deviceName, functionName, functionArg)
+      .callDeviceFunction(token, deviceName, functionName, functionArg)
       .then(functions => {
         emitResponse(
           this,
