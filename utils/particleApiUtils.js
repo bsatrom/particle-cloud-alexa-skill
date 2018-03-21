@@ -90,8 +90,46 @@ const callDeviceFunction = (token, deviceName, functionName, functionArg) => {
   });
 };
 
+const getDeviceVariables = (token, deviceName) => {
+  return new Promise((resolve, reject) => {
+    getDeviceByName(token, deviceName)
+      .then(device => {
+        if (device) {
+          resolve(device.body.variables);
+        } else {
+          reject();
+        }
+      })
+      .catch(err => reject(err));
+  });
+};
+
+const getVariable = (token, deviceName, variable) => {
+  return new Promise((resolve, reject) => {
+    getDeviceByName(token, deviceName)
+      .then(device => {
+        if (device) {
+          const varArguments = {
+            deviceId: device.body.id,
+            name: variable,
+            auth: token
+          };
+
+          resolve(particle.getVariable(varArguments));
+        } else {
+          reject();
+        }
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
 exports.utils = {
   getOnlineDevices,
   getDeviceFunctions,
-  callDeviceFunction
+  callDeviceFunction,
+  getDeviceVariables,
+  getVariable
 };

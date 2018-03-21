@@ -123,12 +123,19 @@ const handlers = {
     particleApiUtils
       .getDeviceFunctions(token, deviceName)
       .then(functions => {
-        emitResponse(
-          this,
-          `Here are the functions for the device named ${deviceName}: ${utils.sayArray(
-            functions
-          )}`
-        );
+        if (functions.length === 0) {
+          emitResponse(
+            this,
+            `There are no functions available on the device named ${deviceName}`
+          );
+        } else {
+          emitResponse(
+            this,
+            `Here are the functions for the device named ${deviceName}: ${utils.sayArray(
+              functions
+            )}`
+          );
+        }
       })
       .catch(err => {
         if (err === 'DEVICE_NOT_FOUND') {
@@ -145,7 +152,7 @@ const handlers = {
     const token = this.event.session.user.accessToken;
 
     if (token === undefined) {
-      return mitAccountLinkResponse(this);
+      return emitAccountLinkResponse(this);
     }
 
     const slots = this.event.request.intent.slots;
@@ -168,6 +175,84 @@ const handlers = {
           emitResponse(this, `Sorry, I couldn't find a function by that name`);
         } else if (err === 'DEVICE_NOT_FOUND') {
           emitResponse(this, `Sorry, I couldn't find a device by that name`);
+        } else {
+          emitResponse(
+            this,
+            `Sorry, I couldn't get what you wanted. Please try again`
+          );
+        }
+      });
+  },
+  ListVariablesIntent: function() {
+    const token = this.event.session.user.accessToken;
+
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
+    const deviceName = utils.normalizeDeviceName(
+      this.event.request.intent.slots.device.value ||
+        this.attributes['currentDevice']
+    );
+
+    particleApiUtils
+      .getDeviceVariables(token, deviceName)
+      .then(variables => {
+        if (utils.objectIsEmpty(variables)) {
+          emitResponse(
+            this,
+            `There are no variables available on the device named ${deviceName}`
+          );
+        } else {
+          emitResponse(
+            this,
+            `Here are the variables for the device named ${deviceName}: ${utils.sayObject(
+              variables
+            )}`
+          );
+        }
+      })
+      .catch(err => {
+        if (err === 'DEVICE_NOT_FOUND') {
+          emitResponse(this, `Sorry, I couldn't find a device by that name`);
+        } else {
+          emitResponse(
+            this,
+            `Sorry, I couldn't get what you wanted. Please try again`
+          );
+        }
+      });
+  },
+  GetVariableIntent: function() {
+    const token = this.event.session.user.accessToken;
+
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
+
+    const slots = this.event.request.intent.slots;
+    const deviceName = utils.normalizeDeviceName(
+      slots.device.value || this.attributes['currentDevice']
+    );
+    const variable = utils.normalizeFunctionName(slots.variable.value);
+
+    particleApiUtils
+      .getVariable(token, deviceName, variable)
+      .then(value => {
+        emitResponse(
+          this,
+          `The value of the variable named ${variable} on device ${deviceName} is ${
+            value.body.result
+          }`
+        );
+      })
+      .catch(err => {
+        console.log('Code: ', err.statusCode);
+        if (err.statusCode === 404) {
+          emitResponse(
+            this,
+            `Sorry, I couldn't find a variable by that name. Please try again.`
+          );
         } else {
           emitResponse(
             this,
