@@ -99,7 +99,7 @@ const handlers = {
     emitResponse(this, `Ok, I've set your current device to ${deviceName}`);
   },
   GetActiveDeviceIntent: function() {
-    if (this.attributes['currentDevice'] !== '') {
+    if (this.attributes['currentDevice'] === '') {
       emitResponse(this, `You don't currently have an active device set.`);
     } else {
       emitResponse(
@@ -247,7 +247,6 @@ const handlers = {
         );
       })
       .catch(err => {
-        console.log('Code: ', err.statusCode);
         if (err.statusCode === 404) {
           emitResponse(
             this,
