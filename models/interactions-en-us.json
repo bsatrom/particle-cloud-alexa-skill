@@ -48,8 +48,8 @@
           "name": "GetActiveDeviceIntent",
           "slots": [],
           "samples": [
-            "for my active device",
-            "for my current device",
+            "my active device",
+            "my current device",
             "current device",
             "what's my device",
             "what's my active device",
