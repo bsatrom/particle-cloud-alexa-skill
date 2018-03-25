@@ -4,6 +4,8 @@
 'use strict';
 
 const Alexa = require('alexa-sdk');
+const bst = require('bespoken-tools');
+
 const utils = require('./utils/skillUtils').utils;
 const particleApiUtils = require('./utils/particleApiUtils').utils;
 
@@ -273,11 +275,14 @@ const handlers = {
   }
 };
 
-exports.handler = function(event, context, callback) {
-  const APP_ID = 'amzn1.ask.skill.925e2d0a-2bd9-434a-83ae-c6bb8fd16085';
-  const alexa = Alexa.handler(event, context);
-  alexa.appId = APP_ID;
-  alexa.dynamoDBTableName = 'particleDeviceState';
-  alexa.registerHandlers(handlers);
-  alexa.execute();
-};
+exports.handler = bst.Logless.capture(
+  'ccc51960-fc8e-4cf3-b117-67bf2b90f105',
+  function(event, context) {
+    const APP_ID = 'amzn1.ask.skill.925e2d0a-2bd9-434a-83ae-c6bb8fd16085';
+    const alexa = Alexa.handler(event, context);
+    alexa.appId = APP_ID;
+    alexa.dynamoDBTableName = 'particleDeviceState';
+    alexa.registerHandlers(handlers);
+    alexa.execute();
+  }
+);
