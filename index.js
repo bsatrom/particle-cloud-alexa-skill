@@ -95,13 +95,21 @@ const handlers = {
       });
   },
   SetActiveDeviceIntent: function() {
-    const deviceName = this.event.request.intent.slots.device.value;
-    this.attributes['currentDevice'] = deviceName;
+    const deviceName = this.event.request.intent.slots.deviceName.value;
 
-    emitResponse(this, `Ok, I've set your current device to ${deviceName}`);
+    if (deviceName) {
+      this.attributes['currentDevice'] = deviceName;
+
+      emitResponse(this, `Ok, I've set your current device to ${deviceName}`);
+    } else {
+      emitResponse(
+        this,
+        `Sorry, I didn't understand which device you wanted me to set as active. Please try again.`
+      );
+    }
   },
   GetActiveDeviceIntent: function() {
-    if (this.attributes['currentDevice'] === '') {
+    if (!this.attributes['currentDevice']) {
       emitResponse(this, `You don't currently have an active device set.`);
     } else {
       emitResponse(
@@ -118,7 +126,7 @@ const handlers = {
     }
 
     const deviceName = utils.normalizeDeviceName(
-      this.event.request.intent.slots.device.value ||
+      this.event.request.intent.slots.deviceName.value ||
         this.attributes['currentDevice']
     );
 
@@ -159,7 +167,7 @@ const handlers = {
 
     const slots = this.event.request.intent.slots;
     const deviceName = utils.normalizeDeviceName(
-      slots.device.value || this.attributes['currentDevice']
+      slots.deviceName.value || this.attributes['currentDevice']
     );
     const functionName = utils.normalizeFunctionName(slots.functionName.value);
     const functionArg = slots.argument ? slots.argument.value : '';
@@ -193,7 +201,7 @@ const handlers = {
     }
 
     const deviceName = utils.normalizeDeviceName(
-      this.event.request.intent.slots.device.value ||
+      this.event.request.intent.slots.deviceName.value ||
         this.attributes['currentDevice']
     );
 
@@ -234,7 +242,7 @@ const handlers = {
 
     const slots = this.event.request.intent.slots;
     const deviceName = utils.normalizeDeviceName(
-      slots.device.value || this.attributes['currentDevice']
+      slots.deviceName.value || this.attributes['currentDevice']
     );
     const variable = utils.normalizeFunctionName(slots.variable.value);
 
@@ -268,10 +276,10 @@ const handlers = {
     this.emit(':ask', speechOutput, reprompt);
   },
   'AMAZON.CancelIntent': function() {
-    emitResponse(this.t('STOP_MESSAGE'));
+    emitResponse(this, this.t('STOP_MESSAGE'));
   },
   'AMAZON.StopIntent': function() {
-    emitResponse(this.t('STOP_MESSAGE'));
+    emitResponse(this, this.t('STOP_MESSAGE'));
   }
 };
 

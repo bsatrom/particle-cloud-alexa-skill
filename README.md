@@ -1,8 +1,14 @@
-# MyParticle
+# particle-cloud-alexa-skill
 
-Alexa Skill Lambda Function for accessing Particle devices
+Alexa Skill For accessing Particle devices via the Particle Device Cloud
 
-Available Interactions (with sample utterances):
+## Skill Installation
+
+1.  "Alexa, install Particle Cloud"
+2.  Open the Alexa app on your phone or alexa.amazon.com to link the skill to your Particle account
+3.  "Alexa, open Particle Cloud"
+
+## V1 - Available Interactions (with sample utterances):
 
 * Determine the number of online devices
   * "how many devices are online"
@@ -19,7 +25,6 @@ Available Interactions (with sample utterances):
   * "what are my connected devices"
 * List functions for a device
   * "list functions"
-  * "functions for {device}"
   * "what functions does {device} have"
   * "my functions for {device}"
   * "cloud functions for {device}"
@@ -43,20 +48,18 @@ Available Interactions (with sample utterances):
   * "What variables do I have on my device"
   * "List variables for {device}"
   * "List variables"
-* Get the value of a device variable
-  * "what's the value of variable {variable} on device {device}"
-  * "what's the value of variable {variable} "
-  * "get variable named {variable} on device named {device}"
+* Get the value of a device variable **[Current Device Must Be Set Via "Set active device command"]**
+  * "what's the value of variable {variable}"
   * "get variable named {variable}"
-* Call cloud function on device
-  * "Run function {functionName} for {device}"
-  * "Call function {functionName} on {device}"
-  * "Execute function {functionName} on {device}"
-  * "Call function {functionName} on {device}"
-* Call cloud function on device with argument
-  * "Call function {functionName} on device {device} with argument {argument}"
-  * "Execute function {functionName} on device {device} with argument {argument}"
-  * "Run function {functionName} on device {device} with argument {argument}"
-  * "Run function {functionName} with argument {argument}"
-  * "Call function {functionName} with argument {argument}"
-  * "Execute function {functionName} with argument {argument}"
+* Call cloud function on device **[Current Device Must Be Set Via "Set active device command"]**
+  * "Run function {functionName}"
+  * "Call function {functionName}"
+  * "Execute function {functionName}"
+
+## Features planned for v2 (Not yet available)
+
+* Call cloud function on device **with argument**
+* Set variables on a device
+* Rename a device
+* Suggest a device name
+* Signal a device
