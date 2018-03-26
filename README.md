@@ -25,6 +25,7 @@ Alexa Skill For accessing Particle devices via the Particle Device Cloud
   * "what are my connected devices"
 * List functions for a device
   * "list functions"
+  * "list functions for {device}"
   * "what functions does {device} have"
   * "my functions for {device}"
   * "cloud functions for {device}"

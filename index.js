@@ -21,6 +21,13 @@ const emitAccountLinkResponse = alexaSdk => {
   );
 };
 
+const emitSetActiveDeviceResponse = alexaSdk => {
+  alexaSdk.response.speak(
+    `You need to set an active device to use this command. Say Alexa, set active device with the name of the device you want to work with.`
+  );
+  alexaSdk.emit('responseReady');
+};
+
 const handlers = {
   LaunchRequest: function() {
     if (this.event.session.user.accessToken === undefined) {
@@ -96,11 +103,37 @@ const handlers = {
   },
   SetActiveDeviceIntent: function() {
     const deviceName = this.event.request.intent.slots.deviceName.value;
+    const token = this.event.session.user.accessToken;
+
+    if (token === undefined) {
+      return emitAccountLinkResponse(this);
+    }
 
     if (deviceName) {
-      this.attributes['currentDevice'] = deviceName;
+      particleApiUtils
+        .getDeviceByName(token, utils.normalizeDeviceName(deviceName))
+        .then(device => {
+          this.attributes['currentDevice'] = device.body.name;
+          this.attributes['currentDeviceId'] = device.body.id;
 
-      emitResponse(this, `Ok, I've set your current device to ${deviceName}`);
+          emitResponse(
+            this,
+            `Ok, I've set your current device to ${deviceName}`
+          );
+        })
+        .catch(err => {
+          if (err === 'DEVICE_NOT_FOUND') {
+            emitResponse(
+              this,
+              `Sorry, I couldn't find a device with the name ${deviceName} in your account.`
+            );
+          } else {
+            emitResponse(
+              this,
+              `Sorry, I couldn't get what you wanted. Please try again`
+            );
+          }
+        });
     } else {
       emitResponse(
         this,
@@ -129,6 +162,13 @@ const handlers = {
       this.event.request.intent.slots.deviceName.value ||
         this.attributes['currentDevice']
     );
+
+    if (!deviceName) {
+      return emitResponse(
+        this,
+        `Please provide a device name or set an active device to use this command.`
+      );
+    }
 
     particleApiUtils
       .getDeviceFunctions(token, deviceName)
@@ -163,6 +203,8 @@ const handlers = {
 
     if (token === undefined) {
       return emitAccountLinkResponse(this);
+    } else if (this.attributes['currentDevice'] === undefined) {
+      return emitSetActiveDeviceResponse(this);
     }
 
     const slots = this.event.request.intent.slots;
@@ -205,6 +247,13 @@ const handlers = {
         this.attributes['currentDevice']
     );
 
+    if (!deviceName) {
+      return emitResponse(
+        this,
+        `Please provide a device name or set an active device to use this command.`
+      );
+    }
+
     particleApiUtils
       .getDeviceVariables(token, deviceName)
       .then(variables => {
@@ -238,6 +287,8 @@ const handlers = {
 
     if (token === undefined) {
       return emitAccountLinkResponse(this);
+    } else if (this.attributes['currentDevice'] === undefined) {
+      return emitSetActiveDeviceResponse(this);
     }
 
     const slots = this.event.request.intent.slots;

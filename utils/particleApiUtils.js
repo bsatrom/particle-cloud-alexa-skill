@@ -128,6 +128,7 @@ const getVariable = (token, deviceName, variable) => {
 
 exports.utils = {
   getOnlineDevices,
+  getDeviceByName,
   getDeviceFunctions,
   callDeviceFunction,
   getDeviceVariables,
