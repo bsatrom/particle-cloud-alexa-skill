@@ -279,7 +279,7 @@ const handlers = {
     emitResponse(this, this.t('STOP_MESSAGE'));
   },
   'AMAZON.StopIntent': function() {
-    emitResponse(xthis, this.t('STOP_MESSAGE'));
+    emitResponse(this, this.t('STOP_MESSAGE'));
   }
 };
 

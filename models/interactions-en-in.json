@@ -20,28 +20,13 @@
           "slots": [
             {
               "name": "functionName",
-              "type": "FunctionName"
-            },
-            {
-              "name": "device",
-              "type": "DeviceName"
-            },
-            {
-              "name": "argument",
-              "type": "Argument"
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
-            "Run  function {functionName} for {device}",
-            "Call function {functionName}  on {device}",
-            "Execute function {functionName} on {device}",
-            "Call function {functionName} on {device}",
-            "Call function {functionName} on device {device} with argument {argument}",
-            "Execute function {functionName} on device {device} with argument {argument}",
-            "Run function {functionName} on device {device} with argument {argument}",
-            "Run function {functionName} with argument {argument}",
-            "Call function {functionName} with argument {argument}",
-            "Execute function {functionName} with argument {argument}"
+            "Run  function {functionName}",
+            "Call function {functionName} ",
+            "Execute function {functionName} "
           ]
         },
         {
@@ -74,17 +59,17 @@
           "name": "ListFunctionsIntent",
           "slots": [
             {
-              "name": "device",
-              "type": "DeviceName"
+              "name": "deviceName",
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
             "list functions",
-            "functions for {device}",
-            "what functions does {device} have",
-            "my functions for {device}",
-            "cloud functions for {device}",
-            "what are my cloud functions for {device}"
+            "functions for {deviceName}",
+            "what functions does {deviceName} have",
+            "my functions for {deviceName}",
+            "cloud functions for {deviceName}",
+            "what are my cloud functions for {deviceName}"
           ]
         },
         {
@@ -101,30 +86,30 @@
           "name": "SetActiveDeviceIntent",
           "slots": [
             {
-              "name": "device",
-              "type": "DeviceName"
+              "name": "deviceName",
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
-            "Set {device} as my current device",
-            "Set {device} active",
-            "Set my current device to {device}",
-            "Set active device to {device}",
-            "Set device to {device}"
+            "Set {deviceName} as my current device",
+            "Set {deviceName} active",
+            "Set my current device to {deviceName}",
+            "Set active device to {deviceName}",
+            "Set device to {deviceName}"
           ]
         },
         {
           "name": "ListVariablesIntent",
           "slots": [
             {
-              "name": "device",
-              "type": "DeviceName"
+              "name": "deviceName",
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
-            "Variables for {device}",
+            "Variables for {deviceName}",
             "What variables do I have on my device",
-            "List variables for {device}",
+            "List variables for {deviceName}",
             "List variables"
           ]
         },
@@ -132,204 +117,17 @@
           "name": "GetVariableIntent",
           "slots": [
             {
-              "name": "device",
-              "type": "DeviceName"
-            },
-            {
               "name": "variable",
-              "type": "VariableName"
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
-            "what's the value of variable {variable} on device {device}",
             "what's the value of variable {variable} ",
-            "get variable named {variable} on device named {device}",
             "get variable named {variable}"
           ]
         }
       ],
-      "types": [
-        {
-          "name": "DeviceName",
-          "values": [
-            {
-              "name": {
-                "value": "my cool sensor"
-              }
-            },
-            {
-              "name": {
-                "value": "office sensors"
-              }
-            },
-            {
-              "name": {
-                "value": "ed rotator"
-              }
-            },
-            {
-              "name": {
-                "value": "mydevice"
-              }
-            },
-            {
-              "name": {
-                "value": "carrot pants"
-              }
-            }
-          ]
-        },
-        {
-          "name": "FunctionName",
-          "values": [
-            {
-              "name": {
-                "value": "publish message"
-              }
-            },
-            {
-              "name": {
-                "value": "light up"
-              }
-            },
-            {
-              "name": {
-                "value": "say hello"
-              }
-            },
-            {
-              "name": {
-                "value": "notify me of something"
-              }
-            },
-            {
-              "name": {
-                "value": "set value"
-              }
-            },
-            {
-              "name": {
-                "value": "blink"
-              }
-            },
-            {
-              "name": {
-                "value": "turn off"
-              }
-            },
-            {
-              "name": {
-                "value": "turn on"
-              }
-            },
-            {
-              "name": {
-                "value": "stop"
-              }
-            },
-            {
-              "name": {
-                "value": "start"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Argument",
-          "values": [
-            {
-              "name": {
-                "value": "go to there"
-              }
-            },
-            {
-              "name": {
-                "value": "stop"
-              }
-            },
-            {
-              "name": {
-                "value": "1"
-              }
-            },
-            {
-              "name": {
-                "value": "0"
-              }
-            },
-            {
-              "name": {
-                "value": "seventy-five"
-              }
-            },
-            {
-              "name": {
-                "value": "88"
-              }
-            },
-            {
-              "name": {
-                "value": "this is some more text"
-              }
-            },
-            {
-              "name": {
-                "value": "some text"
-              }
-            },
-            {
-              "name": {
-                "value": "one"
-              }
-            }
-          ]
-        },
-        {
-          "name": "VariableName",
-          "values": [
-            {
-              "name": {
-                "value": "which one is it"
-              }
-            },
-            {
-              "name": {
-                "value": "is off"
-              }
-            },
-            {
-              "name": {
-                "value": "is on"
-              }
-            },
-            {
-              "name": {
-                "value": "toggle"
-              }
-            },
-            {
-              "name": {
-                "value": "sound level"
-              }
-            },
-            {
-              "name": {
-                "value": "water level"
-              }
-            },
-            {
-              "name": {
-                "value": "temprature"
-              }
-            },
-            {
-              "name": {
-                "value": "temp"
-              }
-            }
-          ]
-        }
-      ]
+      "types": []
     }
   }
 }
