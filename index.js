@@ -271,15 +271,21 @@ const handlers = {
       });
   },
   'AMAZON.HelpIntent': function() {
-    const speechOutput = this.t('HELP_MESSAGE');
-    const reprompt = this.t('HELP_MESSAGE');
-    this.emit(':ask', speechOutput, reprompt);
+    const speechOutput = `You can ask me to set an active device, get names of online devices, get variables and call functions.`;
+    const reprompt = `What would you like to do?`;
+    this.emit(':ask', speechOutput + ' ' + reprompt, reprompt);
   },
   'AMAZON.CancelIntent': function() {
-    emitResponse(this, this.t('STOP_MESSAGE'));
+    emitResponse(this, `Goodbye`);
   },
   'AMAZON.StopIntent': function() {
-    emitResponse(this, this.t('STOP_MESSAGE'));
+    emitResponse(this, `Goodbye`);
+  },
+  Unhandled: function() {
+    var speechOutput = 'Sorry, something went wrong.';
+    var reprompt = 'Would you like to try again?';
+    this.response.speak(speechOutput + ' ' + reprompt).listen(reprompt);
+    this.emit(':responseReady');
   }
 };
 
