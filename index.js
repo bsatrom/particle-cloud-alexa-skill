@@ -147,7 +147,9 @@ const handlers = {
     } else {
       emitResponse(
         this,
-        `Your current active device is ${this.attributes['currentDevice']}`
+        `Your current active device is ${utils.normalizeDeviceName(
+          this.attributes['currentDevice']
+        )}`
       );
     }
   },
@@ -209,13 +211,12 @@ const handlers = {
 
     const slots = this.event.request.intent.slots;
     const deviceName = utils.normalizeDeviceName(
-      slots.deviceName.value || this.attributes['currentDevice']
+      this.attributes['currentDevice']
     );
     const functionName = utils.normalizeFunctionName(slots.functionName.value);
-    const functionArg = slots.argument ? slots.argument.value : '';
 
     particleApiUtils
-      .callDeviceFunction(token, deviceName, functionName, functionArg)
+      .callDeviceFunction(token, deviceName, functionName)
       .then(functions => {
         emitResponse(
           this,
@@ -331,13 +332,13 @@ const handlers = {
   },
   'AMAZON.StopIntent': function() {
     emitResponse(this, `Goodbye`);
-  },
+  } /*,
   Unhandled: function() {
     var speechOutput = 'Sorry, something went wrong.';
     var reprompt = 'Would you like to try again?';
     this.response.speak(speechOutput + ' ' + reprompt).listen(reprompt);
     this.emit(':responseReady');
-  }
+  }*/
 };
 
 exports.handler = bst.Logless.capture(
