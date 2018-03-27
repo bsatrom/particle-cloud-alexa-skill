@@ -61,7 +61,7 @@ const getDeviceFunctions = (token, deviceName) => {
   });
 };
 
-const callDeviceFunction = (token, deviceName, functionName, functionArg) => {
+const callDeviceFunction = (token, deviceName, functionName) => {
   return new Promise((resolve, reject) => {
     getDeviceByName(token, deviceName)
       .then(device => {
@@ -73,7 +73,6 @@ const callDeviceFunction = (token, deviceName, functionName, functionArg) => {
           const fnArguments = {
             deviceId: device.body.id,
             name: cloudFunction,
-            argument: functionArg,
             auth: token
           };
 
