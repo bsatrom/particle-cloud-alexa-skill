@@ -294,7 +294,7 @@ const handlers = {
 
     const slots = this.event.request.intent.slots;
     const deviceName = utils.normalizeDeviceName(
-      slots.deviceName.value || this.attributes['currentDevice']
+      this.attributes['currentDevice']
     );
     const variable = utils.normalizeFunctionName(slots.variable.value);
 

@@ -64,7 +64,6 @@
             }
           ],
           "samples": [
-            "list functions for {deviceName}",
             "list functions",
             "functions for {deviceName}",
             "what functions does {deviceName} have",
@@ -95,7 +94,6 @@
             "Set {deviceName} as my current device",
             "Set {deviceName} active",
             "Set my current device to {deviceName}",
-            "Set my active device to {deviceName}",
             "Set active device to {deviceName}",
             "Set device to {deviceName}"
           ]
@@ -124,6 +122,10 @@
             }
           ],
           "samples": [
+            "the value of {variable}",
+            "value of {variable}",
+            "for variable {variable}",
+            "get variable {variable}",
             "what's the value of variable {variable} ",
             "get variable named {variable}"
           ]

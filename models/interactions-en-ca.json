@@ -122,6 +122,10 @@
             }
           ],
           "samples": [
+            "the value of {variable}",
+            "value of {variable}",
+            "for variable {variable}",
+            "get variable {variable}",
             "what's the value of variable {variable} ",
             "get variable named {variable}"
           ]

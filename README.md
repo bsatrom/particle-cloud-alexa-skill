@@ -50,7 +50,11 @@ Alexa Skill For accessing Particle devices via the Particle Device Cloud
   * "List variables for {device}"
   * "List variables"
 * Get the value of a device variable **[Current Device Must Be Set Via "Set active device command"]**
-  * "what's the value of variable {variable}"
+  * "the value of {variable}"
+  * "value of {variable}"
+  * "for variable {variable}"
+  * "get variable {variable}"
+  * "what's the value of variable {variable} "
   * "get variable named {variable}"
 * Call cloud function on device **[Current Device Must Be Set Via "Set active device command"]**
   * "Run function {functionName}"
